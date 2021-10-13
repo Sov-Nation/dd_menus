@@ -21,6 +21,7 @@ function nearbyPlayers(options, nextup, close)
 			table.insert(elements, {
 				label = '(' .. v .. ') ' .. PlayerData.name .. ' - ' .. PlayerData.job.label,
 				value = v,
+				identifier = PlayerData.identifier,
 				name = PlayerData.name,
 				job = PlayerData.job.label
 			})
