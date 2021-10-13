@@ -95,7 +95,9 @@ function areYouSure(options, nextup, close)
 	function(data, menu)
 		menu.close()
 		if data.current.value == 'no' then
-			close(data, menu)
+			if close then
+				close(data, menu)
+			end
 			return
 		end
 		nextup(data, menu)
