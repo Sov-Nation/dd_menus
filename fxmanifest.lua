@@ -16,8 +16,12 @@ shared_scripts {
     '@es_extended/imports.lua',
 }
 
+server_scripts {
+	'server/*.lua',
+}
+
 client_scripts {
-	'client/main.lua',
+	'client/*.lua',
 }
 
 exports {

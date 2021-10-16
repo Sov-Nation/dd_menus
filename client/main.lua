@@ -8,39 +8,31 @@ function nearbyPlayers(options, nextup, close)
 	local ped = PlayerPedId()
 	local pedPos = GetEntityCoords(ped)
 	local nearPlayers = ESX.Game.GetPlayersInArea(pedPos, distance)
+	for k, v in pairs(nearPlayers) do
+		nearPlayers[k] = GetPlayerServerId(v)
+	end
 	if options.self then
 		table.insert(nearPlayers, id)
 	elseif not next(nearPlayers) then
 		ESX.ShowNotification('~r~No players nearby', false, true, nil)
 		return
 	end
-	local elements = {}
-	for k, v in pairs(nearPlayers) do
-		if options.self or v ~= id then
-			local PlayerData = ESX.GetPlayerData(v)
-			table.insert(elements, {
-				label = '(' .. v .. ') ' .. PlayerData.name .. ' - ' .. PlayerData.job.label,
-				value = v,
-				identifier = PlayerData.identifier,
-				name = PlayerData.name,
-				job = PlayerData.job.label
-			})
-		end
-	end
-	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'nearbyplayers', {
-		title    = options.title or 'Pick a player',
-		align    = 'top-left',
-		elements = elements
-	},
-	function(data, menu)
-		nextup(data, menu)
-	end,
-	function(data, menu)
-		menu.close()
-		if close then
-			close(data, menu)
-		end
-	end)
+	ESX.TriggerServerCallback('dd_menus:getPlayers', function(elements)
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'nearbyplayers', {
+			title    = options.title or 'Pick a player',
+			align    = 'top-left',
+			elements = elements
+		},
+		function(data, menu)
+			nextup(data, menu)
+		end,
+		function(data, menu)
+			menu.close()
+			if close then
+				close(data, menu)
+			end
+		end)
+	end, nearPlayers)
 end
 
 function amount(options, nextup, close)
