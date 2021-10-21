@@ -24,6 +24,7 @@ function nearbyPlayers(options, nextup, close)
 			elements = elements
 		},
 		function(data, menu)
+			menu.close()
 			nextup(data, menu)
 		end,
 		function(data, menu)
